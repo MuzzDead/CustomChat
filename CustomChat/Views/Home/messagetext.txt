@@ -1,0 +1,90 @@
+  const hubConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/Chat")
+    .build();
+
+const chatBody = document.querySelector('.chat-body');
+
+// Function to scroll to the bottom of the chat body
+function scrollToBottom() {
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+
+    var createRoomBtn = document.getElementById('create-room-btn');
+    var createRoomModel = document.getElementById('create-room-modal');
+
+    createRoomBtn.addEventListener('click', function(){
+        createRoomModel.classList.add('active');
+    });
+
+    function closeModal(){
+        createRoomModel.classList.remove('active');
+    }
+
+
+// Call the scrollToBottom function whenever new messages are added
+hubConnection.on("Receive", function (message, userName) {
+    const userNameElem = document.createElement("b");
+    userNameElem.className = "senderName";
+    userNameElem.textContent = `${userName}: `;
+
+    const elem = document.createElement("p");
+    elem.appendChild(userNameElem);
+    elem.appendChild(document.createTextNode(message));
+
+    const chatroom = document.getElementById("chatroom");
+
+    // Focus chatroom to enable scrolling after new messages:
+    chatroom.focus();
+
+    // Add message to chatroom:
+    chatroom.appendChild(elem);
+
+    // Scroll chatroom to the bottom of the visible area:
+    chatroom.scrollTop = chatroom.scrollHeight;
+
+    // After adding a new message, scroll to the bottom of the chat body
+    scrollToBottom();
+});
+
+// Scroll to the bottom when the page loads
+window.onload = scrollToBottom;
+
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+document.getElementById("message").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+
+function sendMessage() {
+    const userName = '@User.Identity!.Name';
+    const message = document.getElementById("message").value;
+
+    if (message.trim() !== "") {
+        hubConnection.invoke("Send", message, userName)
+            .catch(function (err) {
+                return console.error(err.toString());
+            });
+
+        document.getElementById("message").value = "";
+    }
+}
+
+hubConnection.start()
+    .then(function () {
+        document.getElementById("sendBtn").disabled = false;
+    })
+    .catch(function (err) {
+        return console.error(err.toString());
+    });
+
+// Add wheel event handler:
+document.getElementById("chatroom").addEventListener("wheel", function (event) {
+    // Get the scroll delta:
+    const delta = event.deltaY;
+
+    // Scroll the chatroom by the delta amount:
+    document.getElementById("chatroom").scrollTop += delta;
+});

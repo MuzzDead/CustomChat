@@ -1,0 +1,318 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .lolo {
+        padding-top: 5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @@keyframes fadeInAnimation {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .present {
+        background-color: #007bff;
+        color: white;
+        width: 50%;
+        text-align: center;
+        animation: fadeInAnimation 1.5s ease-in-out;
+    }
+
+    @@keyframes fadeInText {
+        0% {
+            opacity: 0;
+            transform: translateY(20px); /* Початкове положення - нижче на 20px */
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0); /* Завершальне положення - відсутнє вище/нижче */
+        }
+    }
+
+    .welcome-info{
+        padding-top: 75px;
+        font-size:large;
+        text-align:center;
+        padding-bottom:75px;
+        animation: fadeInText 2.5s ease-in-out;
+        
+    }
+
+    @@keyframes fadeInItems {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .inform {
+        display: flex;
+        justify-content: center;
+        align-items: stretch; /* Рівномірний розподіл висоти для .item */
+        flex-direction: row; /* Зміна напрямку на горизонтальний */
+        padding-bottom: 75px;
+    }
+
+    .inform-story {
+        display: flex;
+        justify-content: center;
+        align-items: stretch; /* Рівномірний розподіл висоти для .item */
+        flex-direction: row; /* Зміна напрямку на горизонтальний */
+        padding-bottom: 75px;
+    }
+
+    .item {
+        margin: 0 25px;
+        text-align: center;
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        flex: 1;
+        max-width: 300px;
+        transition: transform 0.4s ease-in-out, box-shadow 0.3s ease-in-out; /* Додана анімація для плавного переходу */
+        animation: fadeInItems 3.5s ease-in-out;
+    }
+
+    .item:hover {
+        transform: scale(1.1); /* Збільшення при наведенні */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* Зміна тіні при наведенні */
+    }
+
+    @@keyframes bounceInRight {
+        0%, 20%, 40%, 60%, 80%, 100% {
+            transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        }
+        0% {
+            opacity: 0;
+            transform: translateX(3000px);
+        }
+        20% {
+            transform: translateX(-25px);
+        }
+        40% {
+            transform: translateX(10px);
+        }
+        60% {
+            transform: translateX(-5px);
+        }
+        80% {
+            transform: translateX(2px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .item-story{
+        margin: 0 25px;
+        text-align: center;
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        flex: 1;
+        max-width: 80%;
+        transition: transform 0.4s ease-in-out, box-shadow 0.3s ease-in-out; /* Додана анімація для плавного переходу */
+        animation: bounceInRight 2.5s ease-in-out;
+    }
+
+    .hat {
+        color: #007bff;
+    }
+
+    .hat-t {
+        color: #007bff;
+        padding-top: 50px;
+        padding-bottom: 100px;
+    }
+
+    .hat-story{
+        margin: 10px;
+        color: #007bff;
+        text-align:left;
+    }
+
+    .paragraf {
+        margin: 5px;
+        text-align: center;
+        align-items: center;
+        height: 125px;
+    }
+
+    .paragraf-story {
+    margin: 10px;
+    text-align: left;
+    align-items: center;
+    }
+
+    .paragraf-story a{
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    hr.cut {
+      border-top-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      opacity: 0.8;
+      width: 80%;
+      height: 10px;
+      margin: 0 auto;
+      background-color: #007bff;
+    }
+
+
+        .footer {
+        background-color: #ddd; /* Сірий колір футера */
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width:100%;
+    }
+
+    .incore {
+        font-size: 16px;
+        color: #007bff; /* Колір тексту */
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 20px;
+    }
+
+    .social-link {
+        font-size: 24px;
+        color: #007bff; /* Колір посилань на соціальні мережі */
+        text-decoration: none;
+    }
+
+    .icons {
+        width: 30px; /* Ширина іконок */
+        height: 30px; /* Висота іконок */
+    }
+    
+    ::-webkit-scrollbar{
+    width:15px;
+}
+
+::-webkit-scrollbar-track{
+    background:#fff;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2) inset;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#d4d4d4;
+    border-radius:8px;
+}
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var items = document.querySelectorAll(".item");
+        items.forEach(function (item) {
+            item.addEventListener("mouseenter", function () {
+                items.forEach(function (otherItem) {
+                    if (otherItem !== item) {
+                        otherItem.style.filter = "blur(2px)"; /* Зменшене значення блюру для інших .item */
+                    }
+                });
+            });
+
+            item.addEventListener("mouseleave", function () {
+                items.forEach(function (otherItem) {
+                    otherItem.style.filter = "blur(0px)";
+                });
+            });
+        });
+    });
+
+    window.onload = function() {
+  var welcomeDiv = document.querySelector('.custom-chat-welcome');
+  welcomeDiv.removeAttribute('style');
+}
+</script>
+
+<div class="lolo">
+    <div class="present">
+        <h1>Welcome on CustomChat!</h1>
+    </div>
+</div>
+
+<div class="welcome-info">
+    <p>Welcome to our innovative web chat, where communication becomes an exciting experience! <br />
+        Allow us to share a bit about our history and how this chat originated and evolved.</p>
+</div>
+
+<hr class="cut"/>
+
+<h2 class="hat-t" align="center">Our advantages:</h2>
+
+<div class="inform">
+    <div class="item">
+        <h4 class="hat">Personalized Settings</h4>
+        <p class="paragraf">Customize your chat to suit your preferences. Modify themes, fonts, and more to make "CustomChat" uniquely yours.</p>
+    </div>
+
+    <div class="item">
+        <h4 class="hat">Security First</h4>
+        <p class="paragraf">We utilize modern technologies to ensure the confidentiality and security of your communication. You can trust the protection of your data.</p>
+    </div>
+
+    <div class="item">
+        <h4 class="hat">Instant Messaging</h4>
+        <p class="paragraf">Forget about delays. "CustomChat" offers instant messaging, keeping you connected with friends and colleagues at all times.</p>
+    </div>
+</div>
+
+<hr class="cut"/>
+
+<h2 class="hat-t" align="center">Creation Story</h2>
+<div class="inform-story">
+    <div class="item-story">
+        <p class="paragraf-story">Our journey began when, much like <a href="https://en.wikipedia.org/wiki/Mark_Zuckerberg">Mark Zuckerberg</a>, I found inspiration in his captivating tale of creating <a href="https://www.facebook.com/">Facebook</a>. 
+            Together with friends from <a href="https://www.wunu.edu.ua/">university</a>, we felt the need to reshape the world of online communication, just as Zuckerberg had successfully done.<br /><br />
+We gathered together and decided to create the first prototype of our chat. 
+Sleepless nights, relentless coding sessions, and countless cups of espresso became our tools on this exhilarating path. With every line of code, we aspired to make our platform a symbol of a new era in online communication.<br /><br />
+Our primary goal was not merely to create another chat but to revolutionize standards and make online communication meaningful and exciting for everyone. 
+Every feature, every interface element was built with attention to detail, a dedication to our transformative mission..<br /><br />
+Thus, our first prototype was born, but our story had only just begun. If Mark's story served as a catalyst for creating Facebook, we hope that our story will bring a new dimension to interactivity and online communication. 
+<a style="font-weight" href="#">Because changing the world together is what has always inspired us to move forward.</a></p>
+    </div>
+</div>
+
+<hr class="cut"/>
+
+<div class="footer">
+    <a class="incore">CustomChut inc. © 2024</a>
+    <div class="social-links">
+        <a href="https://github.com/MuzzDead" class="social-link" target="_blank">
+            <img src="/Img/github.png" alt="GitHub" class="icons">
+        </a>
+        <a href="https://www.linkedin.com/in/ihor-hyda-816849273/" class="social-link" target="_blank">
+            <img src="/Img/linkedin.png" alt="LinkedIn" class="icons">
+        </a>
+        <a href="/Home/Chat" class="social-link" target="_blank">
+            <img src="/Img/instagram.png" alt="Instagram" class="icons">
+        </a>
+    </div>
+</div>

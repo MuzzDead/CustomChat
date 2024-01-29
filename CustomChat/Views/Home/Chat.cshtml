@@ -1,0 +1,329 @@
+﻿@model Chat
+    @{
+        ViewData["Title"] = "Chat";
+    }
+
+<style>
+.main{  
+
+    flex-grow: 1;
+    height:87%;
+
+    display: flex;
+    flex-direction: row;
+    padding-bottom:0;
+    overflow: hidden;
+}
+
+@@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.side-menu{
+    background-color: #007bff;
+    width: 15%;
+    height: 100%;
+    animation: slideIn 1.8s ease-out;
+    overflow: auto; 
+}
+
+.chat{
+    background-color: white;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.room-button{
+    color: white;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    height: 50px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+    background-color: #1c86f7;
+    white-space: nowrap;
+}
+
+.room-button > strong{
+    font-size: 40px;
+}
+
+.room-button:hover{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.chat-body{
+    justify-content: flex-end;
+    background-color: white;
+    flex-grow: 1;
+    flex-direction: column;
+    padding-left: 15%;
+    padding-right: 10%;
+    overflow-y: scroll; 
+}
+
+
+@@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.chat-input {
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    padding: 15px; 
+    height: 15%;
+    animation: slideUp 1.7s ease-out; /* Adjust the duration and easing as needed */
+}
+
+.message{
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.2rem;
+
+    overflow: hidden;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+.message>*{
+    padding: 0.2rem;
+}
+
+.message>header{
+    font-weight: bold;
+    width: 100px;
+    text-align: center;
+    font-size: 22px;
+    color:#007bff;
+}
+
+.message>p{
+    margin: 0;
+    max-width: 600px;
+    flex-grow: 5;
+    font-size: 18px;
+    margin-left: 15px;
+    overflow: auto;
+    overflow-wrap: break-word; /* Handle normal word wrapping */
+    word-wrap: break-word; /* Handle long words */
+}
+
+.message>footer{
+    min-width: 60px;
+    text-align: center;
+}
+
+#message{
+    width: 50%;
+    height: 50px;
+    border:none;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius:  15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    font-size: 18px;
+}
+
+#sendBtn{
+    margin-left: 2.5px;
+    background-color:#007bff;
+    color: white;
+    font-size: 18px;
+    border:none;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius:  0px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    height: 50px;
+    width: 75px;
+}
+
+#sendBtn:hover{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.chat-read{
+    padding-left: 15%;
+    padding-right: 10%;
+}
+
+
+ .chatroom{
+    background-color: white;
+    max-height: 100%; /* Add this line to limit the height to the viewport height */
+    padding: 10px;
+}   
+    
+.senderName {
+    color: #007bff;
+    font-size: 20px;
+}
+
+::-webkit-scrollbar{
+    width:15px;
+}
+
+::-webkit-scrollbar-track{
+    background:#fff;
+
+}
+
+::-webkit-scrollbar-thumb{
+    background:#d4d4d4;
+    border-radius:8px;
+}
+
+
+.modal{
+    display:none;
+    position: fixed;
+    height: 100vh;
+    min-width: 100vw;
+    z-index:200;
+    top:0;
+    left:0;
+    background-color: rgba(0.2, 0.2, 0.2, 0.8);
+}
+
+.modal.active{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal > .close{
+    position: absolute;
+    top:5px;
+    right:5px;
+    margin-top:0;
+
+}
+
+.modal-body{
+    position: relative;
+    width:300px;
+    display: flex;
+    flex-direction:column;
+    background-color:#fff;
+    padding:1rem;
+}
+
+.modal-body > * {
+    margin-top:0.75rem;
+}
+.modal-body > header{
+    color:#007bff;
+    font-size:24px;
+}
+
+.modal-body > div > input{
+    width:100%;
+}
+
+.modal-body > footer{
+    text-align: center;
+}
+</style>
+
+<div class="main">
+    <vc:room></vc:room>
+    <div class="chat">
+        <div class="chat-body">
+
+        <form class="chat-input" asp-controller="Home" asp-action="CreateMessage">
+            <input type="text" name="message" id="message" />
+            <input type="button" id="sendBtn" value="Send" />
+        </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal active" id="create-room-modal">
+    <button type="button" class="close" onclick="closeModal()">X</button>
+    <form asp-controller="Home" asp-action="CreateRoom" class="modal-body">
+        <header>Create Room</header>
+        <div>
+            <input name="name"/>
+        </div>
+        <footer>
+            <button>Create</button>
+        </footer>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+<script>
+const hubConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/Chat")
+    .build();
+
+const chatBody = document.querySelector('.chat-body');
+
+// Function to scroll to the bottom of the chat body
+function scrollToBottom() {
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+
+    var createRoomBtn = document.getElementById('create-room-btn');
+    var createRoomModel = document.getElementById('create-room-modal');
+
+    createRoomBtn.addEventListener('click', function(){
+        createRoomModel.classList.add('active');
+    });
+
+    function closeModal(){
+        createRoomModel.classList.remove('active');
+    }
+
+// Scroll to the bottom when the page loads
+window.onload = scrollToBottom;
+
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+document.getElementById("message").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+
+function sendMessage() {
+    const userName = '@User.Identity!.Name';
+    const message = document.getElementById("message").value;
+
+    if (message.trim() !== "") {
+        hubConnection.invoke("Send", message, userName)
+            .catch(function (err) {
+                return console.error(err.toString());
+            });
+
+        document.getElementById("message").value = "";
+    }
+}
+
+hubConnection.start()
+    .then(function () {
+        document.getElementById("sendBtn").disabled = false;
+    })
+    .catch(function (err) {
+        return console.error(err.toString());
+    });
+</script>
